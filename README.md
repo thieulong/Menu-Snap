@@ -5,4 +5,5 @@ Tired of going to restaurants and seeing menus full of text but no images?
 Just snap a picture of the menu, and it will show you how the dishes look like.
 
 👉 Try it now: [@menusnap_bot](https://t.me/menusnap_bot)  
-📹 See it in action: [Video Demonstration](https://youtube.com/shorts/d7egMIKeKSk?feature=share)
+[![Watch the video](https://img.youtube.com/vi/d7egMIKeKSk/0.jpg)](https://youtube.com/shorts/d7egMIKeKSk?feature=share)
+
