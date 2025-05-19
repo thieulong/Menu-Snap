@@ -6,7 +6,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMe
 import easyocr
 from openai import OpenAI
 import ast
-from duckduckgo_search import DDGS
+import requests
 import aiohttp
 from urllib.parse import quote, unquote
 
@@ -16,6 +16,8 @@ with open("data.json") as f:
 
 TOKEN = config["telegram_token"]
 OPENAI_API_KEY = config["openai_key"]
+SERP_API_KEY = config["serp_api"]
+
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Initialize OCR reader
@@ -55,14 +57,25 @@ async def download_image(url, filepath):
     return False
 
 # Search images (DuckDuckGo)
-async def search_images(query, max_results=8):
-    results = []
-    with DDGS() as ddgs:
-        for r in ddgs.images(query):
-            results.append(r["image"])
-            if len(results) >= max_results:
-                break
-    return results
+async def search_images(query, max_results=4):
+    url = "https://serpapi.com/search"
+    params = {
+        "engine": "google",
+        "q": query,
+        "tbm": "isch",
+        "api_key": SERP_API_KEY
+    }
+
+    response = requests.get(url, params=params)
+    results = response.json()
+
+    image_urls = []
+    for item in results.get("images_results", []):
+        image_urls.append(item["original"])
+        if len(image_urls) >= max_results:
+            break
+
+    return image_urls
 
 # --- Handlers ---
 
